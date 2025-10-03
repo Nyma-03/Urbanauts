@@ -72,7 +72,7 @@ We also used **Gemini AI** and **ChatGPT** to refine data collection, analysis, 
 
 ### 🔐 Authentication & Profile  
 **Home Page**  
-![](screenshots/home.png)  
+![](screenshots/home_page.png)  
 
 **Signup**  
 ![](screenshots/signup.png)  
