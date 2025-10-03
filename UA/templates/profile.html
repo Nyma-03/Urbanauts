@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile - Urbanauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body class="bg-black text-green-400 font-mono min-h-screen flex flex-col">
+  <nav class="bg-gradient-to-r from-purple-800 to-pink-600 p-4 flex justify-between items-center">
+  {% comment %} <a href="{% url 'home' %}" class="text-green-300 font-bold text-xl">⚡ Urbanauts ⚡</a> {% endcomment %}
+   <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-36 w-auto object-contain -my-10"> <!-- bigger logo -->
+      </a>
+  <div class="space-x-4">
+    <a href="{% url 'home' %}" class="text-white hover:text-green-300">Home</a>
+    <a href="{% url 'signup' %}" class="text-white hover:text-green-300">Sign Up</a>
+    <a href="{% url 'login' %}" class="text-white hover:text-green-300">Login</a>
+    <a href="{% url 'profile' %}" class="text-white hover:text-green-300">Profile</a>
+    <a href="{% url 'logout' %}" class="text-red-300 hover:text-red-500">Logout</a>
+    <a href="{% url 'blog_create' %}" class="mt-4 inline-block bg-green-600 hover:bg-green-700 text-white p-2 rounded">
+  Upload Blog
+</a>
+
+  </div>
+</nav>
+
+  <main class="flex-1 flex items-center justify-center">
+    <div class="bg-black border-2 border-purple-500 rounded-2xl p-8 w-full max-w-2xl text-center shadow-2xl">
+      <h2 class="text-pink-400 text-3xl">Welcome, {{ request.user.username }} ⚡</h2>
+      <p class="mt-2">Full Name: {{ request.user.first_name }} {{ request.user.last_name }}</p>
+      <p>Email: {{ request.user.email }}</p>
+      <p>City: {{ userextra.city|default:"Not set" }}</p>
+      <p>Bio: {{ userextra.bio|default:"No bio yet" }}</p>
+
+      <form method="post" class="mt-4 space-y-2">
+        {% csrf_token %}
+        <input type="text" name="bio" value="{{ userextra.bio }}" placeholder="Bio"
+               class="w-full p-2 bg-black border border-green-500 rounded">
+        <input type="text" name="city" value="{{ userextra.city }}" placeholder="City"
+               class="w-full p-2 bg-black border border-green-500 rounded">
+        <input type="text" name="latitude" value="{{ userextra.latitude }}" placeholder="Latitude"
+               class="w-full p-2 bg-black border border-green-500 rounded">
+        <input type="text" name="longitude" value="{{ userextra.longitude }}" placeholder="Longitude"
+               class="w-full p-2 bg-black border border-green-500 rounded">
+        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-lg">
+          Update Info
+        </button>
+      </form>
+
+      {% if userextra.latitude and userextra.longitude %}
+      <div id="map" class="mt-6 w-full h-64 rounded-lg border border-green-400"></div>
+      <script>
+        var map = L.map('map').setView([{{ userextra.latitude }}, {{ userextra.longitude }}], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker([{{ userextra.latitude }}, {{ userextra.longitude }}]).addTo(map)
+          .bindPopup("{{ request.user.first_name }} {{ request.user.last_name }} - {{ userextra.city }}");
+      </script>
+      {% endif %}
+    </div>
+  </main>
+</body>
+</html>

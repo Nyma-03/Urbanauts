@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Risk Zones — UrbaNauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'cyber.css' %}">
+</head>
+<body>
+  <header class="sticky top-0 z-50 nav-wrap">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-bar"></div>
+        <span class="brand-name"><span class="brand-accent">UrbaNauts</span></span>
+      </div>
+      <nav class="nav-links">
+       <a class="active" href="{% url 'home' %}">Home</a>
+                        <a href="{% url 'goals' %}">Goals</a>
+                        <a href="{% url 'contact' %}">Help & Contact</a>
+                        <a href="{% url 'about' %}">About Us</a>
+        <span class="nav-link active">Risks</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1 class="title neon">Risk Zones</h1>
+      <p class="subtitle">Select and view <b>Flood</b>, <b>Rainfall</b>, and <b>Drought</b> risk zones in your city.</p>
+    </section>
+
+    <section class="panel controls">
+      <button id="btn-flood" class="btn-neon">🌊 Flood Risk</button>
+      <button id="btn-rain" class="btn-neon">🌧 Rainfall Risk</button>
+      <button id="btn-drought" class="btn-neon">☀️ Drought Zones</button>
+    </section>
+
+    <section class="panel">
+      <div id="map" class="map"></div>
+    </section>
+  </main>
+
+  <script>
+    const map = L.map('map').setView([22.3569, 91.7832], 10);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      maxZoom: 20,
+      attribution: '&copy; OpenStreetMap, &copy; CARTO'
+    }).addTo(map);
+
+    const floodLayer = L.geoJSON(null, {style:{color:"#00fff0", fillOpacity:0.2}});
+    const rainLayer = L.geoJSON(null, {style:{color:"#8a2be2", fillOpacity:0.2}});
+    const droughtLayer = L.geoJSON(null, {style:{color:"#ff3b7b", fillOpacity:0.2}});
+
+    floodLayer.addTo(map);
+    rainLayer.addTo(map);
+    droughtLayer.addTo(map);
+
+    async function loadRisks(type) {
+      floodLayer.clearLayers(); rainLayer.clearLayers(); droughtLayer.clearLayers();
+      const res = await fetch("{% url 'api_risks' %}");
+      const json = await res.json();
+      json.zones.forEach(z => {
+        const feature = {type:"Feature", geometry:z.geom, properties:z};
+        let layer;
+        if(z.risk_type === "flood") layer = floodLayer;
+        if(z.risk_type === "rainfall") layer = rainLayer;
+        if(z.risk_type === "drought") layer = droughtLayer;
+        if(layer){
+          layer.addData(feature).bindPopup(
+            `<div class="popup">
+              <b>${z.name}</b><br/>
+              City: ${z.city}<br/>
+              Type: ${z.risk_type}<br/>
+              ${z.description}
+            </div>`
+          );
+        }
+      });
+    }
+
+    document.getElementById("btn-flood").addEventListener("click", ()=>loadRisks("flood"));
+    document.getElementById("btn-rain").addEventListener("click", ()=>loadRisks("rainfall"));
+    document.getElementById("btn-drought").addEventListener("click", ()=>loadRisks("drought"));
+  </script>
+</body>
+</html>

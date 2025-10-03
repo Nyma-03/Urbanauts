@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urbanauts – About</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@100&family=Rubik:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== RESET & COMMON ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .clear { clear: both; }
+        .container { max-width: 1330px; margin: 0 auto; padding: 0 15px; }
+        a { font-family: 'Rubik'; text-decoration: none; }
+        h1,h2,h3,h4,h5,h6 { font-family: 'Lato'; font-weight: 800; }
+        p { font-family: 'Rubik'; font-weight: 400; }
+
+        /* ===== NAVBAR LIKE GOALS PAGE ===== */
+        header {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            background: #1f1f29;
+            padding: 0 40px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .logo {
+            height: 250px;
+            width: auto;
+            margin-top: 25px;
+        }
+        .navlinks {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        .navlinks a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        .navlinks a:hover { opacity: 1; }
+        .btn-sign {
+            padding: 12px 22px;
+            border-radius: 999px;
+            background: linear-gradient(135deg,#9b5cf8,#6f35ec);
+            box-shadow: 0 10px 26px rgba(124,58,237,.35);
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* ===== HERO SECTION ===== */
+        section.header-bg-parent {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            margin-top: 100px; /* prevent overlap with fixed navbar */
+        }
+        .header-col2 {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .header-col2 video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .header-content h2 {
+            color: #f7f7f7;
+            font-size: 60px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .transparent-box {
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.5); /* semi-transparent */
+            padding: 30px 40px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: justify;
+            font-size: 18px;
+            line-height: 26px;
+            color: #ffffff; /* text inside box is white */
+        }
+        .signup-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(160deg, #3c0056 0%, #7b0bd0 55%, #1b013c 100%);
+            color: #fff;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 10px;
+            border: 2px solid #7c2cf5;
+            box-shadow: 0 0 0 2px rgba(44,245,198,0.15) inset,
+                        0 8px 24px rgba(0,0,0,0.45),
+                        0 0 22px rgba(124, 11, 208, 0.45);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .signup-btn:hover {
+            background: linear-gradient(160deg, #7b0bd0 0%, #3c0056 55%, #1b013c 100%);
+            box-shadow: 0 0 0 2px rgba(95,255,224,0.25) inset,
+                        0 14px 34px rgba(0,0,0,0.55),
+                        0 0 28px rgba(127, 64, 255,0.55);
+            transform: translateY(-4px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) { .header-content { width: 90%; } }
+        @media (max-width: 760px) {
+            .header-content h2 { font-size: 42px; }
+            .transparent-box { padding: 20px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR (Goal page style) -->
+    <header>
+        <div class="container">
+            <div class="brand">
+                <img src="{% static 'logo.png' %}" alt="URBANAUTS Logo" class="logo"/>
+            </div>
+            <nav class="navlinks">
+                <a class="active" href="{% url 'home' %}">Home</a>
+                <a href="{% url 'goals' %}">Goals</a>
+                <a href="{% url 'about' %}">About Us</a>
+                <a href="{% url 'contact' %}">Help &amp; Contact</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="btn-sign">Profile</a>
+                {% else %}
+                    <a href="{% url 'signup' %}" class="btn-sign">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO / CONTENT -->
+    <section class="header-bg-parent">
+        <div class="header-col2">
+            <video autoplay muted loop>
+                <source src="{% static 'bg2.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+        <div class="header-content">
+            <h2>Why NASA</h2>
+            <div class="transparent-box">
+                <p>
+                    NASA wants planners to ensure human quality of life remains high. Energy availability is part of that: cities with unreliable power affect health, water supply, and business productivity. By combining citizen reports with solar/renewable energy data, our website demonstrates smart strategies for city growth. NASA’s Earth science data is about climate, environment, disaster resilience, and urban planning.<br><br>
+
+                    Our app uses NASA satellite climate + hazard data (floods, heatwaves, risk zones). Addition of citizen science input (users reporting load shedding, waste issues, flooding, feedback and concerns). Then we turn it into action & learning with gamification (EcoCity Builder, Climate Challenges).<br><br>
+
+                    This way:<br>
+                    Users benefit (awareness + fun engagement + tracking their area).<br>
+                    Officials benefit (real-time input + better planning).<br>
+                    NASA benefits (their data is applied directly in community resilience + urban planning).
+                </p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

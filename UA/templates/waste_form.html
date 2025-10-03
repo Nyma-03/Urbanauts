@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Waste Entry — UrbaNauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'cyber.css' %}">
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-bar"></div>
+        <span class="brand-name"><span class="brand-accent">UrbaNauts</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        <a href="{% url 'waste_dashboard' %}" class="nav-link">Waste Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1 class="title neon">Submit Waste Entry</h1>
+      <form method="post" class="mt-4 grid gap-4 md:grid-cols-2">
+        {% csrf_token %}
+        <div class="md:col-span-2">
+          <label class="block text-sm mb-1">Profile</label>
+          {{ form.profile }}
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Date</label>
+          {{ form.date }}
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Waste Type</label>
+          {{ form.waste_type }}
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Weight (kg)</label>
+          {{ form.weight_kg }}
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm mb-1">Notes</label>
+          {{ form.notes }}
+        </div>
+        <div class="md:col-span-2">
+          <button class="btn-neon">Save</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

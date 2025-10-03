@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URBANAUTS – Waste Management</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="text-white min-h-screen"
+      style="font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+             background-image:url('{% static 'background.jpg' %}');
+             background-size:cover;background-position:center;background-repeat:no-repeat;">
+
+  <!-- NAVBAR (same as About page) -->
+  <header class="fixed top-0 left-0 w-full h-[100px] bg-[#1f1f29] shadow-[0_2px_8px_rgba(0,0,0,0.3)] z-[99]">
+    <div class="max-w-[1200px] mx-auto px-10 h-full flex items-center justify-between">
+      <!-- Brand -->
+      <div class="flex items-center gap-6">
+        <a href="{% url 'home' %}">
+          <!-- big logo like About -->
+          <img src="{% static 'logo.png' %}" alt="URBANAUTS Logo" class="h-[250px] w-auto mt-[25px]" />
+        </a>
+      </div>
+
+      <!-- Nav links -->
+      <nav class="flex items-center gap-[50px]">
+        <a href="{% url 'home' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">Home</a>
+        <a href="{% url 'goals' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">Goals</a>
+        <a href="{% url 'contact' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">Help &amp; Contact</a>
+        <a href="{% url 'about' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">About Us</a>
+
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}" class="px-[22px] py-[12px] rounded-full font-bold text-white shadow-[0_10px_26px_rgba(124,58,237,0.35)]"
+             style="background:linear-gradient(135deg,#9b5cf8,#6f35ec);">Profile</a>
+        {% else %}
+          <a href="{% url 'signup' %}" class="px-[22px] py-[12px] rounded-full font-bold text-white shadow-[0_10px_26px_rgba(124,58,237,0.35)]"
+             style="background:linear-gradient(135deg,#9b5cf8,#6f35ec);">Sign Up</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Spacer for fixed header -->
+  <div class="h-[100px]"></div>
+
+  <!-- HERO -->
+  <main class="max-w-[1200px] mx-auto px-10 py-8">
+    <!-- Title centered like the mock -->
+    <h1 class="text-center text-[42px] sm:text-[60px] font-extrabold mb-8">Waste Management</h1>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- LEFT: buttons + copy -->
+      <div class="flex flex-col">
+        <!-- CTA column -->
+        <div class="flex flex-col gap-6 mb-8">
+          <a href="{% url 'waste_dashboard' %}"
+             class="w-full max-w-[460px] rounded-full px-8 py-4 font-extrabold text-[20px] flex items-center justify-between shadow-[0_10px_24px_rgba(0,0,0,0.35)]"
+             style="background:linear-gradient(90deg,#20c997,#8e2de2);">
+            <span>Waste Tracking</span>
+            <span class="text-[22px]">➜</span>
+          </a>
+
+          <a href="{% url 'waste_dashboard' %}"
+             class="w-full max-w-[460px] rounded-full px-8 py-4 font-extrabold text-[20px] flex items-center justify-between shadow-[0_10px_24px_rgba(0,0,0,0.35)]"
+             style="background:linear-gradient(90deg,#1fbf84,#7b2ff7);">
+            <span>Food Waste &amp; Redistribution</span>
+            <span class="text-[22px]">➜</span>
+          </a>
+        </div>
+
+        <!-- Description -->
+        <p class="max-w-[520px] leading-7 text-[16px]">
+          Our system will promote sustainability and waste reduction. Users can track waste
+          through a form and dashboard, while a leaderboard highlights the most eco-friendly
+          households or shops. Stores and bakeries can also log surplus food, and the system
+          will suggest redistribution to nearby areas in need, reducing waste and improving
+          community well-being.
+        </p>
+      </div>
+
+      <!-- RIGHT: illustration -->
+      <div class="flex justify-center lg:justify-start">
+        <img src="{% static 'waste.png' %}" alt="Waste management illustration"
+             class="w-full max-w-[650px] h-auto opacity-90" />
+      </div>
+    </section>
+  </main>
+</body>
+</html>

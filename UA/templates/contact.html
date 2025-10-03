@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URBANAUTS – Help & Contact</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* RESET */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Orbitron', sans-serif; background: #0d0d0d; color: #f5f5f5; }
+    .container { max-width: 1330px; margin: 0 auto; padding: 0 20px; }
+    .clear { clear: both; }
+
+    /* NAVBAR */
+    header {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      background: #111;
+      padding: 0 40px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      border-bottom: 3px solid #ff0090;
+    }
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .brand { display: flex; align-items: center; gap: 20px; }
+    .logo { height: 200px; width: auto; } /* Bigger Logo */
+    .navlinks { display: flex; align-items: center; gap: 40px; }
+    .navlinks a {
+      text-decoration: none;
+      color: #00fff7;
+      font-weight: 600;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+    .navlinks a:hover, .navlinks a.active { color: #ff0090; }
+    .btn-sign {
+      padding: 10px 20px;
+      border-radius: 8px;
+      background: linear-gradient(135deg,#ff0090,#00fff7);
+      font-weight: 700;
+      color: #0d0d0d;
+    }
+
+    /* HERO */
+    section.hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 20px 80px;
+      background: linear-gradient(135deg, #1a0033, #0d0d0d, #001f33);
+    }
+    .hero-content {
+      position: relative;
+      max-width: 700px;
+      width: 100%;
+      background: #111;
+      border: 2px solid #00fff7;
+      border-radius: 12px;
+      padding: 40px;
+    }
+    .hero-content h1 {
+      font-size: 40px;
+      color: #ff0090;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .hero-content p {
+      text-align: center;
+      color: #bbb;
+      margin-bottom: 30px;
+    }
+
+    /* FORM */
+    form .form-group { margin-bottom: 20px; }
+    form label {
+      display: block;
+      font-weight: 600;
+      color: #00fff7;
+      margin-bottom: 8px;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 2px solid #333;
+      outline: none;
+      background: #0d0d0d;
+      font-size: 16px;
+      color: #f5f5f5;
+    }
+    form input:focus, form textarea:focus {
+      border-color: #ff0090;
+    }
+    form textarea { resize: none; height: 120px; }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0d0d0d;
+      background: linear-gradient(135deg,#00fff7,#ff0090);
+      cursor: pointer;
+    }
+    button[type="submit"]:hover {
+      opacity: 0.9;
+    }
+
+    /* SUCCESS BOX */
+    .success-box {
+      background: rgba(0,255,247,0.1);
+      color: #00fff7;
+      border: 1px solid #00fff7;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .hero-content { padding: 25px; }
+      .hero-content h1 { font-size: 32px; }
+      .navlinks { gap: 20px; }
+    }
+    @media(max-width:500px){
+      header { padding: 0 20px; }
+      .navlinks { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="container">
+      <div class="brand">
+        <a href="{% url 'home' %}">
+          <img src="{% static 'logo.png' %}" alt="URBANAUTS" class="logo"/>
+        </a>
+      </div>
+      <nav class="navlinks">
+        <a class="active" href="{% url 'home' %}">Home</a>
+        <a href="{% url 'goals' %}">Goals</a>
+        <a href="{% url 'about' %}">About Us</a>
+        <a href="{% url 'contact' %}">Help &amp; Contact</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}" class="btn-sign">Profile</a>
+        {% else %}
+          <a href="{% url 'signup' %}" class="btn-sign">Sign Up</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Help & Contact</h1>
+      <p>Reach out to us for any questions, suggestions, or support.</p>
+
+      {% if success %}
+        <div class="success-box">{{ success }}</div>
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+</body>
+</html>

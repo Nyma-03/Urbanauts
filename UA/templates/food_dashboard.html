@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Food Redistribution — UrbaNauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'cyber.css' %}">
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-bar"></div>
+        <span class="brand-name"><span class="brand-accent">UrbaNauts</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        <a href="{% url 'food_offer_submit' %}" class="nav-link">Offer Food</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1 class="title neon">Food Waste & Redistribution</h1>
+      <p class="subtitle">Active surplus from stores, with nearest recipient suggestions.</p>
+    </section>
+
+    <section class="panel">
+      <h3 class="font-semibold neon">Active Offers</h3>
+      <div class="mt-3 overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead><tr class="text-left">
+            <th class="pr-4 py-2">Store</th>
+            <th class="pr-4 py-2">Item</th>
+            <th class="pr-4 py-2">Qty (kg)</th>
+            <th class="pr-4 py-2">Ready</th>
+            <th class="pr-4 py-2">Expires</th>
+            <th class="pr-4 py-2">Status</th>
+          </tr></thead>
+          <tbody>
+            {% for o in offers %}
+            <tr class="border-b border-white/10">
+              <td class="pr-4 py-2">{{ o.store.name }}</td>
+              <td class="pr-4 py-2">{{ o.item_name }}</td>
+              <td class="pr-4 py-2">{{ o.quantity_kg }}</td>
+              <td class="pr-4 py-2">{{ o.ready_at|date:"Y-m-d H:i" }}</td>
+              <td class="pr-4 py-2">{{ o.expires_at|date:"Y-m-d H:i" }}</td>
+              <td class="pr-4 py-2">{{ o.status }}</td>
+            </tr>
+            {% empty %}
+            <tr><td class="py-3" colspan="6">No offers yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3 class="font-semibold neon">Suggested Matches (top 3 by distance)</h3>
+      <div class="mt-3">
+        {% for s in suggestions %}
+          <div class="mb-4 border border-white/10 rounded-lg p-3">
+            <div class="text-sm">
+              <b>{{ s.offer.store.name }}</b> → {{ s.offer.item_name }} ({{ s.offer.quantity_kg }} kg),
+              ready {{ s.offer.ready_at|date:"Y-m-d H:i" }}
+            </div>
+            <div class="mt-2 overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead><tr class="text-left">
+                  <th class="pr-4 py-2">Recipient</th>
+                  <th class="pr-4 py-2">Distance (km)</th>
+                  <th class="pr-4 py-2">Alloc (kg)</th>
+                </tr></thead>
+                <tbody>
+                  {% for c in s.candidates %}
+                    <tr class="border-b border-white/10">
+                      <td class="pr-4 py-2">{{ c.recipient.name }}</td>
+                      <td class="pr-4 py-2">{{ c.distance }}</td>
+                      <td class="pr-4 py-2">{{ c.allocated }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="text-xs text-slate-400 mt-2">Tip: Confirm a match in admin via FoodMatch if you need records.</div>
+          </div>
+        {% empty %}
+          <div class="text-sm">No suggestions yet. Add a store with lat/lon and a nearby recipient.</div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>

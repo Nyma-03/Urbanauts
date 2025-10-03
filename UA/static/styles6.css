@@ -1,0 +1,121 @@
+/* ============ Base ============ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root{
+  --white: #ffffff;
+  --text: #e9e7ff;
+  --link: #ffffff;
+  --signup-grad-a: #2a0e82;
+  --signup-grad-b: #650cbf;
+
+  --pill-1-a:#06beb6; --pill-1-b:#48b1bf;
+  --pill-2-a:#6a11cb; --pill-2-b:#2575fc;
+  --pill-3-a:#11998e; --pill-3-b:#38ef7d;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: var(--text);
+  background: url("background.jpeg") no-repeat center center/cover;
+  min-height: 100vh;
+}
+
+/* ============ Top Bar ============ */
+.topbar{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 60px;   /* Matches screenshot spacing */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand{
+  display: flex; align-items: center; gap: 14px;
+}
+
+.logo{ width: 170px; }
+.wordmark{
+  letter-spacing: 3px;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--white);
+}
+
+.nav{
+  display: flex; align-items: center; gap: 36px;
+}
+
+.nav a{
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.btn-signup{
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, var(--signup-grad-a), var(--signup-grad-b));
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ============ Hero ============ */
+.hero{
+  position: relative;
+  max-width: 1150px;
+  margin: 80px auto;
+  padding: 0 60px;
+  text-align: left;
+}
+
+.hero h1{
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 50px;
+  color: #fff;
+  text-align: center;
+}
+
+/* CTA Buttons */
+.cta-list{
+  display: flex;
+  flex-direction: column;
+  gap: 26px;           /* Equal gap between bars */
+  max-width: 480px;
+}
+
+.cta{
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%;
+  padding: 20px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  font-size: 17px;
+}
+
+.cta-1{ background: linear-gradient(90deg, var(--pill-1-a), var(--pill-1-b)); }
+.cta-2{ background: linear-gradient(90deg, var(--pill-2-a), var(--pill-2-b)); }
+.cta-3{ background: linear-gradient(90deg, var(--pill-3-a), var(--pill-3-b)); }
+
+.arrow{ margin-left: 14px; }
+
+/* Right-side Illustration */
+.cityleaf{
+  position: absolute;
+  right: 60px;
+  top: -50px;
+  width: 350px;
+  height: 600px;
+}
+
+/* Description text */
+.desc{
+  margin-top: 60px;
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 960px;
+}

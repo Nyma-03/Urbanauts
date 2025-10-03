@@ -1,0 +1,101 @@
+/* Base */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root{
+  --white: #ffffff;
+  --text: #f5f5f5;
+  --signup-a: #2a0e82;
+  --signup-b: #6b16d8;
+  --cta-bg: #6a11cb;
+  --cta-bg2: #8e2de2;  /* purple gradient */
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  background: url('background.jpg') no-repeat center center/cover;
+  min-height: 100vh;
+}
+
+/* Topbar */
+.topbar{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand{ display: flex; align-items: center; gap: 12px; }
+.logo{ width: 180px; height: auto; }
+.wordmark{ font-weight: 700; font-size: 24px; color: var(--white); letter-spacing: 2px; }
+
+.nav{ display: flex; align-items: center; gap: 36px; }
+.nav a{ text-decoration: none; color: var(--white); font-weight: 500; }
+.btn-signup{
+  padding: 10px 20px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, var(--signup-a), var(--signup-b));
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Hero */
+.hero{
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 60px;
+  text-align: center;
+}
+
+.title{
+  font-size: 46px;
+  font-weight: 800;
+  margin-bottom: 50px;
+  color: #fff;
+}
+
+/* Content grid: buttons left, map right */
+.content{
+  display: flex;
+  align-items: center;   /* vertically align middle */
+  justify-content: space-between;
+  gap: 80px;             /* spacing between menu bars and map */
+}
+
+/* Buttons */
+.cta-list{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;            /* equal space between bars */
+  max-width: 350px;
+}
+
+.cta{
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 30px;
+  border-radius: 40px;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(90deg, var(--cta-bg), var(--cta-bg2));
+}
+
+.arrow{ margin-left: 16px; }
+
+/* Map */
+.map img {
+  max-width: 750px;   /* bigger than before (520px → 600px) */
+  height: auto;
+  margin-left: -500px; /* shift map left, adjust value as needed */
+}
+
+/* Paragraph */
+.desc{
+  margin-top: 60px;
+  font-size: 16px;
+  line-height: 1.7;
+  text-align: left;
+}

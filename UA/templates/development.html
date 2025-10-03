@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>URBANAUTS – Development & Sustainability</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@100;400;700&family=Rubik:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Global reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0b0710;
+      color: #f3f3f7;
+      padding-top: 100px;
+    }
+
+    /* ---------- NAVBAR ---------- */
+    header, header.topbar {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      background: #1f1f29;
+      padding: 0 40px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .container {
+      max-width: 1330px;
+      margin: 0 auto;
+      padding-left: 15px;
+      padding-right: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand { display: flex; align-items: center; gap: 24px; }
+    .logo { height: 250px; width: auto; display: block; margin-top: 25px; }
+
+    .navlinks { display: flex; align-items: center; gap: 50px; }
+    .navlinks a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      opacity: 0.95;
+      transition: opacity 0.25s;
+      font-family: 'Rubik', sans-serif;
+    }
+    .navlinks a:hover { opacity: 1; }
+    .btn-sign {
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg,#9b5cf8,#6f35ec);
+      box-shadow: 0 6px 15px rgba(124,58,237,.25);
+      font-weight: 700;
+      color: #fff;
+    }
+
+    @media (max-width: 700px) {
+      .navlinks { gap: 12px; font-size: 14px; }
+      .logo { height: 80px; margin-top: 0; }
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 120px 20px 80px 20px;
+      position: relative;
+      background: url("{% static 'background.jpg' %}") no-repeat center center;
+      background-size: cover;
+      color: #fff;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 700;
+      margin-bottom: 60px;
+      color: #fff;
+      text-shadow: 0 0 4px #9b5cf8, 0 0 8px #6f35ec;
+    }
+
+    .cta-list {
+      display: flex;
+      flex-direction: column;
+      gap: 40px; /* slightly reduced gap */
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .cta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 28px;
+      border-radius: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #6f35ec, #9b5cf8);
+      box-shadow: 0 0 2px #6f35ec, 0 0 5px #9b5cf8;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 5px #6f35ec, 0 0 10px #9b5cf8;
+    }
+
+    .cta .arrow { font-size: 20px; margin-left: 12px; }
+
+    .hero .cityleaf {
+      max-width: 500px;
+      width: 100%;
+      margin-top: -50px; /* pushed higher on small screens */
+      z-index: 1;
+      position: relative;
+    }
+
+    .hero .desc {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #ddd;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    @media (min-width: 900px) {
+      .hero {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 100px 60px;
+      }
+
+      .hero-content {
+        align-items: center;
+        text-align: center;
+      }
+
+      .cta-list { flex-direction: column; max-width: 400px; }
+      .hero .cityleaf { margin-top: -160px; } /* pushed higher on large screens */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="topbar">
+    <div class="container">
+      <div class="brand">
+        <img src="{% static 'logo.png' %}" alt="URBANAUTS Logo" class="logo"/>
+      </div>
+      <nav class="navlinks">
+        <a class="active" href="{% url 'home' %}">Home</a>
+        <a href="{% url 'goals' %}">Goals</a>
+        <a href="{% url 'about' %}">About Us</a>
+        <a href="{% url 'contact' %}">Help &amp; Contact</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="btn-sign">Profile</a>
+        {% else %}
+            <a href="{% url 'signup' %}" class="btn-sign">Sign Up</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <main class="hero">
+    <div class="hero-content">
+      <h1>Development &amp; Sustainability</h1>
+
+      <div class="cta-list">
+        <a class="cta cta-1" href="{% url 'sustainability' %}">
+          <span>Solar Energy Site Detection</span>
+          <span class="arrow">➜</span>
+        </a>
+
+        <a class="cta cta-2" href="{% url 'sustainability' %}">
+          <span>Urban Greening Opportunities</span>
+          <span class="arrow">➜</span>
+        </a>
+
+        <a class="cta cta-3" href="{% url 'sustainability' %}">
+          <span>Water Resource Map</span>
+          <span class="arrow">➜</span>
+        </a>
+      </div>
+
+      <p class="desc">
+        Our system introduces three additional sustainability-focused features. Solar Energy Site Detection uses map and
+        image overlays to identify the most impactful sites for solar energy production, helping to build a more
+        sustainable and energy-efficient city. Similarly, the Water Resource Map highlights rivers, lakes, and areas under
+        water stress, enabling both better resource management and the detection of hydropower opportunities. Finally,
+        Urban Greening Opportunities analyzes regions with low tree coverage and marks them for citizens and
+        administrators, suggesting where planting trees could reduce risks such as heat, pollution, and environmental
+        degradation. Together, these features enhance the city’s resilience and promote a greener, cleaner future.
+      </p>
+    </div>
+
+    <img class="cityleaf" src="{% static 'cityleaf.png' %}" alt="City with green leaves"/>
+  </main>
+
+</body>
+</html>

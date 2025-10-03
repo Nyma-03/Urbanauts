@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Track Ecosystems — URBANAUTS</title>
+
+  <!-- Tailwind (CDN for dev; swap to compiled build in production) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            orbitron: ['Orbitron', 'ui-sans-serif', 'system-ui'],
+            sans: ['Montserrat', 'ui-sans-serif', 'system-ui']
+          },
+          colors: {
+            neon: '#78F3FF',
+            neon2: '#FF3BD4',
+            space1: '#060A16',
+            space2: '#0A0F1C',
+          },
+          boxShadow: {
+            neon: '0 0 18px rgba(120,243,255,.35), 0 0 36px rgba(120,243,255,.18)'
+          },
+          backgroundImage: {
+            'space-grad':
+              'radial-gradient(1200px 800px at 10% -10%, rgba(120,243,255,0.07), transparent 60%), radial-gradient(800px 600px at 100% 20%, rgba(255,59,212,0.06), transparent 60%), linear-gradient(180deg, #060A16 0%, #0A0F1C 50%, #0A0F1C 100%)'
+          }
+        }
+      },
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="min-h-full bg-space2 text-slate-100 bg-space-grad font-sans">
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-50 backdrop-blur bg-space2/80 border-b border-cyan-300/30 shadow">
+    <nav class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-36 w-auto object-contain -my-10"> <!-- bigger logo -->
+      </a>
+
+      <button id="navToggle" class="md:hidden p-2 rounded border border-cyan-300/30 hover:bg-white/5" aria-label="Toggle navigation">
+        <span class="block w-6 h-0.5 bg-white mb-1"></span>
+        <span class="block w-6 h-0.5 bg-white mb-1"></span>
+        <span class="block w-6 h-0.5 bg-white"></span>
+      </button>
+
+      <ul id="navLinks" class="hidden md:flex items-center gap-2">
+        <li><a href="#location-form" class="px-3 py-2 rounded hover:bg-white/5 border border-transparent hover:border-cyan-300/30">Track</a></li>
+        <li><a href="#air-quality" class="px-3 py-2 rounded hover:bg-white/5 border border-transparent hover:border-cyan-300/30">AQI</a></li>
+        <li><a href="#biodiversity" class="px-3 py-2 rounded hover:bg-white/5 border border-transparent hover:border-cyan-300/30">Biodiversity</a></li>
+        <li><a href="#sustainability" class="px-3 py-2 rounded hover:bg-white/5 border border-transparent hover:border-cyan-300/30">Sustainability</a></li>
+        <li><a href="#air-quality-chart" class="px-3 py-2 rounded border border-cyan-300/60 bg-gradient-to-r from-neon/30 to-neon2/30 shadow-neon text-slate-900">Charts</a></li>
+      </ul>
+    </nav>
+
+    <!-- mobile dropdown -->
+    <ul id="navDropdown" class="md:hidden hidden mx-4 mb-3 rounded-xl border border-cyan-300/30 bg-space2/90 backdrop-blur p-2 space-y-1">
+      <li><a href="#location-form" class="block px-3 py-2 rounded hover:bg-white/5">Track</a></li>
+      <li><a href="#air-quality" class="block px-3 py-2 rounded hover:bg-white/5">AQI</a></li>
+      <li><a href="#biodiversity" class="block px-3 py-2 rounded hover:bg-white/5">Biodiversity</a></li>
+      <li><a href="#sustainability" class="block px-3 py-2 rounded hover:bg-white/5">Sustainability</a></li>
+      <li><a href="#air-quality-chart" class="block px-3 py-2 rounded border border-cyan-300/60 bg-gradient-to-r from-neon/30 to-neon2/30 text-slate-900">Charts</a></li>
+    </ul>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="mx-auto max-w-6xl px-4 py-8 space-y-6">
+    <h1 class="font-orbitron text-2xl md:text-3xl text-neon drop-shadow-[0_0_18px_rgba(120,243,255,.35)]">Track Ecosystems</h1>
+
+    <!-- Location Input Form -->
+    <section id="location-form" class="rounded-2xl border border-cyan-300/30 bg-white/5 backdrop-blur p-5">
+      <h2 class="font-orbitron text-sm text-slate-300 uppercase tracking-wider mb-3">Enter Location (City/Area)</h2>
+      <form method="POST" class="grid gap-3 sm:grid-cols-[1fr_auto] items-center">
+        {% csrf_token %}
+        <input type="text" name="location" id="location" placeholder="Enter city name"
+               class="sm:col-span-1 col-span-2 w-full rounded-lg border border-cyan-300/30 bg-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-300/60"/>
+        <button type="submit"
+                class="rounded-lg border border-cyan-300/60 bg-gradient-to-r from-neon/30 to-neon2/30 shadow-neon text-slate-900 px-4 py-2 hover:brightness-110">
+          Submit
+        </button>
+      </form>
+    </section>
+
+    <!-- Biodiversity Data -->
+    <section id="biodiversity" class="rounded-2xl border border-cyan-300/30 bg-white/5 backdrop-blur p-5">
+      <h2 class="font-orbitron text-sm text-slate-300 uppercase tracking-wider mb-3">Biodiversity Data</h2>
+      {% if biodiversity_data %}
+        <p class="text-slate-200"><span class="text-slate-400">Location:</span> {{ biodiversity_data.location }}</p>
+        <p class="text-slate-200"><span class="text-slate-400">Ecosystem Strength:</span> {{ biodiversity_data.ecosystem_strength }}</p>
+        <p class="text-slate-300 mt-2">{{ biodiversity_data.description }}</p>
+      {% else %}
+        <p class="text-slate-400">No data available for this location.</p>
+      {% endif %}
+    </section>
+
+    <!-- AQI Data -->
+    <section id="air-quality" class="rounded-2xl border border-cyan-300/30 bg-white/5 backdrop-blur p-5">
+      <h2 class="font-orbitron text-sm text-slate-300 uppercase tracking-wider mb-3">Air Quality Index (AQI)</h2>
+      {% if aqi_data %}
+        <p class="text-slate-200">{{ aqi_data.city }} — <span class="text-slate-400">AQI:</span> {{ aqi_data.aqi_value }} ({{ aqi_data.status }})</p>
+        <p class="text-slate-300 mt-2">{{ aqi_data.description }}</p>
+      {% else %}
+        <p class="text-slate-400">No data available for this location.</p>
+      {% endif %}
+    </section>
+
+    <!-- Sustainability Data -->
+    <section id="sustainability" class="rounded-2xl border border-cyan-300/30 bg-white/5 backdrop-blur p-5">
+      <h2 class="font-orbitron text-sm text-slate-300 uppercase tracking-wider mb-3">Sustainability Score</h2>
+      {% if sustainability_data %}
+        <div class="grid md:grid-cols-3 gap-3">
+          <p class="text-slate-200"><span class="text-slate-400">Green Cover:</span> {{ sustainability_data.green_cover }}%</p>
+          <p class="text-slate-200"><span class="text-slate-400">Water Stress:</span> {{ sustainability_data.water_stress }}%</p>
+          <p class="text-slate-200"><span class="text-slate-400">AQI:</span> {{ sustainability_data.aqi }}</p>
+        </div>
+        <p class="text-slate-300 mt-2">{{ sustainability_data.description }}</p>
+      {% else %}
+        <p class="text-slate-400">No data available for this location.</p>
+      {% endif %}
+    </section>
+
+    <!-- AQI Chart -->
+    <section id="air-quality-chart" class="rounded-2xl border border-cyan-300/30 bg-white/5 backdrop-blur p-5">
+      <h2 class="font-orbitron text-sm text-slate-300 uppercase tracking-wider mb-3">Air Quality Index (Chart)</h2>
+      {% if aqi_values %}
+        <div class="rounded-xl border border-white/10 bg-white/5 p-3">
+          <canvas id="aqiChart" class="rounded-lg"></canvas>
+        </div>
+      {% else %}
+        <p class="text-slate-400">Provide a location to render the chart.</p>
+      {% endif %}
+    </section>
+
+    <!-- Sustainability Charts -->
+    <section id="sustainability-chart" class="rounded-2xl border border-cyan-300/30 bg-white/5 backdrop-blur p-5">
+      <h2 class="font-orbitron text-sm text-slate-300 uppercase tracking-wider mb-3">Sustainability Components</h2>
+      {% if sustainability_data %}
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-xl border border-white/10 bg-white/5 p-3">
+            <canvas id="sustainabilityChart" class="rounded-lg"></canvas>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/5 p-3">
+            <canvas id="sustainabilityAqiChart" class="rounded-lg"></canvas>
+          </div>
+        </div>
+      {% else %}
+        <p class="text-slate-400">No sustainability data to chart.</p>
+      {% endif %}
+    </section>
+
+    <!-- Biodiversity Chart -->
+    <section id="biodiversity-chart" class="rounded-2xl border border-cyan-300/30 bg-white/5 backdrop-blur p-5">
+      <h2 class="font-orbitron text-sm text-slate-300 uppercase tracking-wider mb-3">Biodiversity Index</h2>
+      {% if biodiversity_data %}
+        {{ biodiversity_values|json_script:"biodiv-data" }}
+        <div class="rounded-xl border border-white/10 bg-white/5 p-3">
+          <canvas id="biodiversityChart" class="rounded-lg"></canvas>
+        </div>
+      {% else %}
+        <p class="text-slate-400">No biodiversity data to chart.</p>
+      {% endif %}
+    </section>
+  </main>
+
+  <!-- Charts JS (uses your existing context vars) -->
+  <script>
+    // Mobile nav
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+    const navDropdown = document.getElementById('navDropdown');
+    navToggle?.addEventListener('click', () => {
+      navDropdown.classList.toggle('hidden');
+    });
+
+    // Set Chart.js defaults to match theme
+    Chart.defaults.color = '#e6eefb';
+    Chart.defaults.font.family = 'Montserrat, ui-sans-serif, system-ui';
+
+    // AQI Bar
+    {% if aqi_values %}
+    (function() {
+      const ctx = document.getElementById('aqiChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Good', 'Moderate', 'Hazardous'],
+          datasets: [{
+            label: 'AQI Levels',
+            data: [{{ aqi_values.good|default:0 }}, {{ aqi_values.moderate|default:0 }}, {{ aqi_values.hazardous|default:0 }}],
+            backgroundColor: ['#22c55e', '#eab308', '#ef4444'],
+            borderColor: ['#16a34a', '#ca8a04', '#dc2626'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    })();
+    {% endif %}
+
+    // Sustainability Bars
+    {% if sustainability_data %}
+    (function() {
+      const s1 = document.getElementById('sustainabilityChart').getContext('2d');
+      new Chart(s1, {
+        type: 'bar',
+        data: {
+          labels: ['Green Cover (%)', 'Water Stress (%)'],
+          datasets: [{
+            label: 'Percent Metrics',
+            data: [{{ sustainability_values.green_cover|default:0 }}, {{ sustainability_values.water_stress|default:0 }}],
+            backgroundColor: ['#22c55e', '#eab308'],
+            borderColor: ['#16a34a', '#ca8a04'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { beginAtZero: true, max: 100 } },
+          plugins: {
+            tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y}%` } }
+          }
+        }
+      });
+
+      const s2 = document.getElementById('sustainabilityAqiChart').getContext('2d');
+      new Chart(s2, {
+        type: 'bar',
+        data: {
+          labels: ['Sustainability AQI'],
+          datasets: [{
+            label: 'AQI',
+            data: [{{ sustainability_values.aqi|default:0 }}],
+            backgroundColor: ['#ef4444'],
+            borderColor: ['#dc2626'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    })();
+    {% endif %}
+
+    // Biodiversity Donut with epsilon for single-slice cases
+    {% if biodiversity_data %}
+    (function () {
+      const raw = JSON.parse(document.getElementById('biodiv-data').textContent);
+      let strength = Number(raw.ecosystem_strength) || 0;
+      let remaining = Number(raw.remaining) || 0;
+      const EPS = 0.001;
+      if (strength === 0 && remaining === 0) { strength = 50; remaining = 50; }
+      else {
+        if (strength === 0) strength = EPS;
+        if (remaining === 0) remaining = EPS;
+      }
+
+      const ctx = document.getElementById('biodiversityChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Ecosystem Strength', 'Remaining'],
+          datasets: [{
+            data: [strength, remaining],
+            backgroundColor: ['#06b6d4', 'rgba(255,255,255,.15)'],
+            borderColor: ['#0891b2', 'rgba(255,255,255,.25)'],
+            borderWidth: 1,
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: { callbacks: { label: (c) => `${c.label}: ${(+c.parsed).toFixed(2)}%` } }
+          },
+          cutout: '55%'
+        }
+      });
+    })();
+    {% endif %}
+  </script>
+</body>
+</html>

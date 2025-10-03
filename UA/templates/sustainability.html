@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Development & Sustainability — UrbaNauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'cyber.css' %}">
+</head>
+<body>
+  <header class="sticky top-0 z-50 nav-wrap">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-bar"></div>
+        <span class="brand-name"><span class="brand-accent">UrbaNauts</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        <span class="nav-link active">Sustainability</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1 class="title neon">Development & Sustainability</h1>
+      <p class="subtitle">
+        Toggle layers to explore <b>Solar Site Detection</b>, <b>Water Resources</b>, and
+        <b>Urban Greening Opportunities</b>.
+      </p>
+    </section>
+
+    <section class="panel controls">
+      <button id="btn-solar" class="btn-neon">⚡ Solar Energy Sites</button>
+      <button id="btn-water" class="btn-neon">💧 Water Resources</button>
+      <button id="btn-green" class="btn-neon">🌳 Greening Opportunities</button>
+      <span class="hint">Admin-driven data — add a few records and refresh.</span>
+    </section>
+
+    <section class="panel">
+      <div id="map" class="map"></div>
+    </section>
+  </main>
+
+  <script>
+    // Dark map tiles
+    const map = L.map('map').setView([22.3569, 91.7832], 11);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      maxZoom: 20,
+      attribution: '&copy; OpenStreetMap, &copy; CARTO'
+    }).addTo(map);
+
+    const solarLayer = L.layerGroup().addTo(map);
+    const riverLayer = L.geoJSON(null, {style: {color: "#06d7d9", weight: 1.5, opacity: 0.85}}).addTo(map);
+    const reservoirLayer = L.geoJSON(null, {style: {color: "#8a2be2", weight: 1.2, opacity: 0.85, fillOpacity: 0.15}}).addTo(map);
+    const greenLayer = L.layerGroup().addTo(map);
+
+    function solarColor(suit) {
+      if (suit === "High") return "#00fff0";
+      if (suit === "Medium") return "#f59e0b";
+      return "#ff3b7b";
+    }
+
+    async function loadSolar() {
+      solarLayer.clearLayers();
+      const res = await fetch("{% url 'api_solar' %}");
+      const json = await res.json();
+      json.items.forEach(pt => {
+        L.circleMarker([pt.lat, pt.lon], {
+          radius: 7, color: solarColor(pt.suitability), weight: 2, opacity: 0.95, fillOpacity: 0.15
+        }).bindPopup(
+          `<div class="popup">
+            <b>${pt.name}</b><br/>
+            Date: ${pt.date}<br/>
+            GHI: ${pt.ghi} kWh/m²/day<br/>
+            DNI: ${pt.dni ?? '—'}<br/>
+            Suitability: <span style="color:${solarColor(pt.suitability)}">${pt.suitability}</span>
+          </div>`
+        ).addTo(solarLayer);
+      });
+    }
+
+    async function loadWater() {
+      riverLayer.clearLayers(); reservoirLayer.clearLayers();
+      const res = await fetch("{% url 'api_water' %}");
+      const json = await res.json();
+      if (json.rivers?.length) {
+        riverLayer.addData({ type: "FeatureCollection", features: json.rivers.map(f => ({
+          type: "Feature", geometry: f.geom, properties: f.props
+        }))});
+      }
+      if (json.reservoirs?.length) {
+        reservoirLayer.addData({ type: "FeatureCollection", features: json.reservoirs.map(f => ({
+          type: "Feature", geometry: f.geom, properties: f.props
+        }))});
+      }
+    }
+
+    async function loadGreening() {
+      greenLayer.clearLayers();
+      const res = await fetch("{% url 'api_greening' %}");
+      const json = await res.json();
+      json.items.forEach(g => {
+        const color = g.needs ? "#ff3b7b" : "#00fff0";
+        L.circleMarker([g.lat, g.lon], {
+          radius: 6, color, weight: 2, opacity: 0.95, fillOpacity: 0.2
+        }).bindPopup(
+          `<div class="popup">
+            <b>${g.location}</b><br/>
+            Date: ${g.date}<br/>
+            NDVI: ${g.ndvi ?? '—'} &nbsp;|&nbsp; Green cover: ${g.green_cover ?? '—'}<br/>
+            Status: <b>${g.needs ? 'Needs Greening' : 'OK'}</b><br/>
+            ${g.note ?? ''}
+          </div>`
+        ).addTo(greenLayer);
+      });
+    }
+
+    document.getElementById('btn-solar').addEventListener('click', loadSolar);
+    document.getElementById('btn-water').addEventListener('click', loadWater);
+    document.getElementById('btn-green').addEventListener('click', loadGreening);
+  </script>
+</body>
+</html>

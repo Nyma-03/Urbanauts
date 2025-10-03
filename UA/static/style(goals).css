@@ -1,0 +1,161 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.clear { clear: both; }
+
+.common-h5 {
+    color: #3b3663;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+}
+.common-h2 {
+    color: #3b3663;
+    font-size: 30px;
+    line-height: 38px;
+}
+.text-center {
+    margin: 7px;
+    padding: 5%;
+    text-align: center;
+}
+.img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+.container {
+    max-width: 1330px;
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+a { font-family: 'Rubik'; text-decoration: none; }
+h1,h2,h3,h4,h5,h6 { font-family: 'Lato'; font-weight: 800; }
+p { font-family: 'Rubik'; font-weight: 400; }
+
+.fixed-header {
+    position: fixed; width: 100%; z-index: 99;
+    left: 0; top: 0;
+    background-color: #1f0560;
+    box-shadow: 10px 10px 20px #fff;
+}
+header { z-index: 1; position: relative; padding-top: 20px; }
+.nav-col { float: left; width: 75%; }
+.cnt-info-col { float: right; text-align: right; width: 25%; }
+
+/* === LOGO (bigger & aligned) === */
+.logo {
+    float: left;
+    width: 30%;
+    display: flex;
+    align-items: center; /* aligns with navbar */
+}
+.logo img {
+    width: 240px;      /* bigger size */
+    height: auto;      /* keep proportions */
+    max-height: 90px;  /* prevent it from being too tall */
+}
+
+.menu { float: right; width: 70%; }
+.menu a {
+    text-decoration: none;
+    padding: 22px;
+    display: inline-block;
+    color: #fdfdfc;
+    transition: all 0.5s ease;
+}
+.menu a:hover { color: #8c0ae2; }
+.cnt-info-col a {
+    color: #faf9f9;
+    text-decoration: none;
+    margin-top: 23px;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 400;
+    transition: all 0.5s ease;
+}
+.cnt-info-col a:hover { color: #8c0ae2; }
+
+section.header-bg-parent { position: relative; top: -83px; }
+.header-col1 {
+    float: none;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Center horizontally */
+    justify-content: center; /* Center vertically */
+}
+
+/* Transparent box for the paragraph */
+.transparent-box {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.5);  /* semi-transparent background */
+    padding: 30px;
+    border-radius: 10px;
+    margin: 10px 0;
+    max-width: 80%; /* Restrict the box width */
+    text-align: justify; /* Justify the text inside */
+}
+
+.header-col2 {
+    float: right;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 75%;
+}
+.header-col2 video {
+    position: absolute; top: 0; left: 0;
+    min-width: 100%; min-height: 80%;
+    z-index:-100;
+}
+.header-col1 h5 { color: #fafafc; font-size: 18px; font-weight: 700; }
+.header-col1 h2 {
+    color: #f7f7f7;
+    font-size: 60px;
+    line-height: 43px;
+    margin: 21px 0px 15px;
+}
+.header-col1 p {
+    color: #f7f7f7;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
+    margin: 20px 150px 0px;
+}
+
+/* Sign Up button styled like feature boxes */
+.signup-btn {
+    display: inline-block;
+    padding: 3px 10px;
+    background: linear-gradient(160deg, #3c0056 0%, #7b0bd0 55%, #1b013c 100%);
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 2px solid #7c2cf5;
+    box-shadow: 0 0 0 2px rgba(44,245,198,0.15) inset,
+                0 8px 24px rgba(0,0,0,0.45),
+                0 0 22px rgba(124, 11, 208, 0.45);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.signup-btn:hover {
+    background: linear-gradient(160deg, #7b0bd0 0%, #3c0056 55%, #1b013c 100%);
+    box-shadow: 0 0 0 2px rgba(95,255,224,0.25) inset,
+                0 14px 34px rgba(0,0,0,0.55),
+                0 0 28px rgba(127, 64, 255, 0.55);
+}

@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Write Blog - Urbanauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-green-400 font-mono min-h-screen flex flex-col">
+    <nav class="bg-gradient-to-r from-purple-800 to-pink-600 p-4 flex justify-between items-center">
+  {% comment %} <a href="{% url 'home' %}" class="text-green-300 font-bold text-xl">⚡ Urbanauts ⚡</a> {% endcomment %}
+ <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-36 w-auto object-contain -my-10"> <!-- bigger logo -->
+      </a>
+  <div class="space-x-4">
+    
+
+  </div>
+</nav>
+  <main class="flex-1 flex items-center justify-center">
+    <div class="bg-gray-900 p-6 rounded-lg w-2/3 border border-pink-500">
+      <h2 class="text-pink-400 text-2xl mb-4">Write Your Story ⚡</h2>
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white p-2 rounded">Publish</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog</title>
+
+  <!-- Fonts & Icons (same as About) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@100&family=Rubik:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind (kept for your utilities) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ===== RESET & COMMON ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .container { max-width: 1330px; margin: 0 auto; padding: 0 15px; }
+    a { font-family: 'Rubik'; text-decoration: none; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Lato'; font-weight: 800; }
+    body { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#0b0b0e; color:#F4F3FF; }
+
+    /* ===== NAVBAR (exactly like About) ===== */
+    header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      background: #1f1f29;
+      padding: 0 40px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 99;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .brand { display: flex; align-items: center; gap: 24px; }
+    .logo { height: 250px; width: auto; margin-top: 25px; }
+    .navlinks { display: flex; align-items: center; gap: 50px; }
+    .navlinks a {
+      text-decoration: none; color: #fff; font-weight: 600;
+      opacity: 0.9; transition: opacity 0.3s; white-space: nowrap;
+    }
+    .navlinks a:hover { opacity: 1; }
+    .btn-sign, .btn-profile {
+      padding: 12px 22px; border-radius: 999px;
+      background: linear-gradient(135deg,#9b5cf8,#6f35ec);
+      box-shadow: 0 10px 26px rgba(124,58,237,.35);
+      font-weight: 700; color: #fff; border: none;
+    }
+
+    /* ===== Your existing sizing vars (kept) ===== */
+    :root{
+      --table-maxvh: 50vh;
+      --table-minpx: 320px;
+      --table-maxpx: 560px;
+    }
+    .panel-height { max-height: clamp(var(--table-minpx), var(--table-maxvh), var(--table-maxpx)); }
+    .ring-height { height: calc(clamp(var(--table-minpx), var(--table-maxvh), var(--table-maxpx)) * 1.04); width: auto; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (same as About) -->
+  <header>
+    <div class="container">
+      <div class="brand">
+        <a href="{% url 'home' %}">
+          <img src="{% static 'logo.png' %}" alt="URBANAUTS Logo" class="logo"/>
+        </a>
+      </div>
+      <nav class="navlinks">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'goals' %}">Goals</a>
+        <a href="{% url 'about' %}">About Us</a>
+        <a href="{% url 'contact' %}">Help &amp; Contact</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}" class="btn-profile">Profile</a>
+        {% else %}
+          <a href="{% url 'signup' %}" class="btn-sign">Sign Up</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Spacer to offset fixed header -->
+  <div style="height:100px;"></div>
+
+  <!-- HERO (same structure; background set via inline style for Django static) -->
+  <section class="relative grid place-items-center px-2 h-[calc(100vh-84px)] overflow-hidden">
+    <!-- Background image (static) -->
+    <div
+      class="absolute inset-0 -z-10 bg-cover bg-center"
+      style="background-image: url('{% static 'background.jpg' %}');">
+    </div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-black/30 to-black/60"></div>
+    <div class="absolute inset-0 -z-10 [background:radial-gradient(ellipse_at_70%_80%,rgba(0,0,0,0.18),rgba(0,0,0,0.55))]"></div>
+
+    <div class="w-[min(1240px,94vw)] mx-auto grid grid-rows-[auto_1fr] gap-y-3">
+      <h1 class="text-left mb-2 text-[clamp(34px,6vw,58px)] font-bold tracking-[5px] drop-shadow">
+        BLOG
+      </h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-[clamp(20px,4.5vw,48px)] h-[calc(100%_-_8px)] pt-1">
+        <!-- LEFT -->
+        <div class="flex flex-col items-start gap-3">
+          <div class="border-2 border-white/50 bg-black/10 rounded-[2px] overflow-hidden panel-height grid content-start">
+            <div class="text-[clamp(15px,1.7vw,19px)] leading-[1.35] px-4 py-2.5 border-b-2 border-white/35">
+              Citizens can share their experience and<br/>Provide More data to us for improvement
+            </div>
+            <div class="text-[clamp(15px,1.7vw,19px)] leading-[1.35] px-4 py-2.5 border-b-2 border-white/35">
+              Where citizens suggest improvements
+            </div>
+            <div class="text-[clamp(15px,1.7vw,19px)] leading-[1.35] px-4 py-2.5 border-b-2 border-white/35">
+              Track areas of intermittent electricity supply using citizen input.
+            </div>
+            <div class="text-[clamp(15px,1.7vw,19px)] leading-[1.35] px-4 py-2.5 border-b-2 border-white/35">
+              Show maps/dashboards where power is limited.
+            </div>
+            <div class="text-[clamp(15px,1.7vw,19px)] leading-[1.35] px-4 py-2.5">
+              Suggest sustainable solutions using <br/>NASA Earth observation data (like solar potential areas)
+            </div>
+          </div>
+
+          <a href="{% url 'blog_list' %}"
+             class="inline-block rounded-full px-6 py-2 font-semibold text-white bg-gradient-to-r from-indigo-600 to-fuchsia-500 shadow-[0_10px_24px_rgba(90,20,255,0.35)] border border-white/20 hover:shadow-[0_14px_30px_rgba(90,20,255,0.45)] transition">
+            Explore
+          </a>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="grid place-items-center">
+          <img src="{% static 'circle.png' %}" alt="Concentric rings graphic" class="ring-height drop-shadow-[0_16px_36px_rgba(0,0,0,0.45)] md:block"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

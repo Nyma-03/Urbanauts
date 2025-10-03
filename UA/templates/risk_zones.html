@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Zones</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+
+    <h1>Risk Zones</h1>
+
+    <!-- Flood Risk -->
+    <section id="flood-risk">
+        <h2>Flood Risk</h2>
+        <ul>
+            {% for area in flood_risk %}
+                <li>{{ area }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Rainfall Risk -->
+    <section id="rainfall-risk">
+        <h2>Rainfall Risk</h2>
+        <ul>
+            {% for area in rainfall_risk %}
+                <li>{{ area }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Drought Zones -->
+    <section id="drought-zones">
+        <h2>Drought Zones</h2>
+        <ul>
+            {% for area in drought_risk %}
+                <li>{{ area }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+</body>
+</html>

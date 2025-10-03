@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - Urbanauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-green-400 font-mono flex flex-col min-h-screen">
+
+  <!-- NAVBAR -->
+  <nav class="bg-purple-900 border-b-2 border-pink-500 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-32 w-auto object-contain"> <!-- bigger logo -->
+      </a>
+      <!-- Nav Links -->
+      <div class="space-x-6">
+        <a href="/" class="text-green-300 hover:text-pink-400">Home</a>
+        <a href="/about" class="text-green-300 hover:text-pink-400">About</a>
+        <a href="{% url 'login' %}" class="text-green-300 hover:text-pink-400">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN SIGN-UP BOX -->
+  <main class="flex-1 flex items-center justify-center px-4 mt-8">
+    <div class="bg-[#111] p-10 rounded-2xl shadow-xl border-2 border-pink-500 max-w-2xl w-full">
+
+      <!-- HEADER -->
+      <div class="text-center mb-8">
+        <h2 class="text-pink-400 text-3xl font-bold">Create Account</h2>
+        <p class="text-green-300 text-sm mt-2">Join Urbanauts and step into the cyber future 🚀</p>
+      </div>
+
+      <!-- FORM -->
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Keeps all your Django form fields like username, first_name, email, city, etc. -->
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" 
+                class="w-full bg-gradient-to-r from-pink-600 to-purple-700 hover:opacity-90 text-white font-bold p-3 rounded-xl transition">
+          Sign Up
+        </button>
+      </form>
+
+      <!-- FOOTER -->
+      <p class="mt-6 text-sm text-green-300 text-center">
+        Already have an account? 
+        <a href="{% url 'login' %}" class="underline text-pink-400 hover:text-pink-300">Login</a>
+      </p>
+    </div>
+  </main>
+
+</body>
+</html>

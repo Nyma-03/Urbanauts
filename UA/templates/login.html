@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Urbanauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-green-400 font-mono flex flex-col min-h-screen">
+
+  <!-- NAVBAR -->
+  <nav class="bg-purple-900 border-b-2 border-pink-500 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-36 w-auto object-contain -my-10"> <!-- bigger logo -->
+      </a>
+      <!-- Nav Links -->
+      <div class="space-x-6">
+        <a href="/" class="text-green-300 hover:text-pink-400">Home</a>
+        <a href="/about" class="text-green-300 hover:text-pink-400">About</a>
+        <a href="{% url 'signup' %}" class="text-green-300 hover:text-pink-400">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN LOGIN BOX -->
+  <main class="flex-1 flex items-center justify-center px-4">
+    <div class="bg-gray-900 p-12 rounded-2xl shadow-xl border-2 border-green-500 max-w-md w-full">
+      <h2 class="text-green-400 text-3xl mb-6 text-center font-bold">Login</h2>
+      
+      {% if error %}
+        <p class="text-red-500 mb-4 text-center">{{ error }}</p>
+      {% endif %}
+      
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username"
+               class="w-full p-3 bg-black border-2 border-green-500 rounded-lg text-green-300 focus:outline-none focus:border-pink-400">
+        <input type="password" name="password" placeholder="Password"
+               class="w-full p-3 bg-black border-2 border-green-500 rounded-lg text-green-300 focus:outline-none focus:border-pink-400">
+        <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-green-800 hover:opacity-90 text-white font-bold p-3 rounded-xl transition">
+          Login
+        </button>
+      </form>
+
+      <p class="mt-6 text-sm text-pink-400 text-center">
+        No account? 
+        <a href="{% url 'signup' %}" class="underline hover:text-pink-300">Sign Up</a>
+      </p>
+    </div>
+  </main>
+
+</body>
+</html>

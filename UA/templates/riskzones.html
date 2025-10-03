@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URBANAUTS – Track Risk Zones</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen text-[#f5f5f5]"
+      style="font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+             background-image:url('{% static 'background.jpeg' %}');
+             background-size:cover;background-position:center;background-repeat:no-repeat;">
+
+  <!-- NAVBAR (same as About) -->
+  <header class="fixed top-0 left-0 w-full h-[100px] bg-[#1f1f29] shadow-[0_2px_8px_rgba(0,0,0,0.3)] z-[99]">
+    <div class="max-w-[1200px] mx-auto px-10 h-full flex items-center justify-between">
+      <div class="flex items-center gap-6">
+        <a href="{% url 'home' %}">
+          <img src="{% static 'logo.png' %}" alt="URBANAUTS Logo" class="h-[250px] w-auto mt-[25px]" />
+        </a>
+      </div>
+
+      <nav class="flex items-center gap-[50px]">
+        <a href="{% url 'home' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">Home</a>
+        <a href="{% url 'goals' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">Goals</a>
+        <a href="{% url 'contact' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">Help &amp; Contact</a>
+        <a href="{% url 'about' %}" class="text-white font-semibold opacity-90 hover:opacity-100 transition">About Us</a>
+
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}" class="px-[22px] py-[12px] rounded-full font-bold text-white shadow-[0_10px_26px_rgba(124,58,237,0.35)]"
+             style="background:linear-gradient(135deg,#9b5cf8,#6f35ec);">Profile</a>
+        {% else %}
+          <a href="{% url 'signup' %}" class="px-[22px] py-[12px] rounded-full font-bold text-white shadow-[0_10px_26px_rgba(124,58,237,0.35)]"
+             style="background:linear-gradient(135deg,#9b5cf8,#6f35ec);">Sign Up</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Spacer to offset fixed header -->
+  <div class="h-[100px]"></div>
+
+  <!-- HERO (centered vertically & horizontally) -->
+  <main class="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center">
+    <div class="max-w-[1200px] w-full mx-auto px-10">
+      <h1 class="text-white font-extrabold text-[46px] mb-[40px] text-center">
+        Track Risk Zones Near You
+      </h1>
+
+      <!-- Content: perfectly centered block -->
+      <div class="flex flex-col md:flex-row items-center justify-center gap-[40px] md:gap-[80px]">
+        <!-- Left CTA list -->
+        <div class="flex flex-col gap-[30px] w-full max-w-[350px]">
+          <a href="{% url 'risks' %}"
+             class="flex items-center justify-between px-[30px] py-5 rounded-[40px] font-extrabold text-[18px] text-white shadow-md hover:shadow-lg transition"
+             style="background:linear-gradient(90deg,#6a11cb,#8e2de2);">
+            Flood Risk <span class="ml-4">➜</span>
+          </a>
+
+          <a href="{% url 'risks' %}"
+             class="flex items-center justify-between px-[30px] py-5 rounded-[40px] font-extrabold text-[18px] text-white shadow-md hover:shadow-lg transition"
+             style="background:linear-gradient(90deg,#6a11cb,#8e2de2);">
+            Rainfall Risk <span class="ml-4">➜</span>
+          </a>
+
+          <a href="{% url 'risks' %}"
+             class="flex items-center justify-between px-[30px] py-5 rounded-[40px] font-extrabold text-[18px] text-white shadow-md hover:shadow-lg transition"
+             style="background:linear-gradient(90deg,#6a11cb,#8e2de2);">
+            Drought Zones <span class="ml-4">➜</span>
+          </a>
+        </div>
+
+        <!-- World map -->
+        <div class="w-full flex items-center justify-center">
+          <img src="{% static 'worldmap.png' %}" alt="World Map Risk Zones"
+               class="w-full max-w-[750px] h-auto
+                      md:translate-x-0 lg:-translate-x-6 xl:-translate-x-4 2xl:translate-x-0" />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <p class="mt-[50px] text-justify leading-7 text-[16px]">
+        The system will also include risk zone detection to guide safer and more sustainable city planning. For instance, Flood Risk Zones will be identified
+        using data and prototype images to alert both citizens and planners. These areas should not be used for housing but can instead be reserved for
+        wetlands, parks, or fish farming, ensuring timely evacuation of citizens when needed. Similarly, Rainfall Risk Zones will be highlighted to show
+        regions of consistently high rainfall. This information will help citizens and developers avoid designating these areas for farming that requires
+        ample sunlight or for sensitive infrastructure, thereby ensuring both productivity and safety. Lastly, Drought-Prone Zones will be mapped, as
+        these areas are unsuitable for farming. Instead, they can be better utilized for solar power plants or other purposes more aligned with their climate
+        conditions. By providing these visual risk assessments, users—both citizens and city planners—will be able to understand the environmental
+        challenges of their area and make informed decisions after selecting their city.
+      </p>
+    </div>
+
+    <!-- Mobile map (kept below content for small screens) -->
+    <div class="md:hidden px-10 mt-10 w-full">
+      <img src="{% static 'worldmap.png' %}" alt="World Map Risk Zones" class="w-full h-auto" />
+    </div>
+  </main>
+</body>
+</html>

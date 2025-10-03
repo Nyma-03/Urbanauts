@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ blog.title }} - Urbanauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-green-400 font-mono min-h-screen flex flex-col">
+    <nav class="bg-gradient-to-r from-purple-800 to-pink-600 p-4 flex justify-between items-center">
+  {% comment %} <a href="{% url 'home' %}" class="text-green-300 font-bold text-xl">⚡ Urbanauts ⚡</a> {% endcomment %}
+  <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-36 w-auto object-contain -my-10"> <!-- bigger logo -->
+      </a>
+  <div class="space-x-4">
+  </div>
+</nav>
+{% comment %} <p>DEBUG: {{ blog }}</p>
+<p>DEBUG: {{ blog.title }}</p>
+<p>DEBUG: {{ blog.content }}</p> {% endcomment %}
+
+  <main class="flex-1 p-6">
+    <h1 class="text-pink-400 text-3xl">{{ blog.title }}</h1>
+    <p class="text-sm">By {{ blog.author.username }} • {{ blog.created_at|date:"M d, Y" }}</p>
+    <p class="mt-4 text-green-300">{{ blog.content }}</p>
+    {% if blog.tags %}
+      <p class="mt-2 text-purple-400">Tags: {{ blog.tags }}</p>
+    {% endif %}
+
+    {% if user.is_authenticated and user == blog.author %}
+  <a href="{% url 'blog_edit' blog.id %}" 
+     class="inline-block bg-yellow-500 text-black px-4 py-2 mt-4 rounded hover:bg-yellow-400">
+     ✏️ Edit Blog
+  </a>
+{% endif %}
+
+  </main>
+</body>
+</html>

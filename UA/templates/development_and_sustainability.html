@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development & Sustainability</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h1>Development & Sustainability</h1>
+
+    <!-- Solar Energy Site Detection -->
+    <section id="solar-energy">
+        <h2>Solar Energy Site Detection</h2>
+        <ul>
+            {% for site in solar_energy_sites %}
+                <li>{{ site }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Water Resource Map -->
+    <section id="water-resources">
+        <h2>Water Resource Map</h2>
+        <p>Rivers:</p>
+        <ul>
+            {% for river in water_resources.rivers %}
+                <li>{{ river }}</li>
+            {% endfor %}
+        </ul>
+
+        <p>Lakes:</p>
+        <ul>
+            {% for lake in water_resources.lakes %}
+                <li>{{ lake }}</li>
+            {% endfor %}
+        </ul>
+
+        <p>Water Stress Areas:</p>
+        <ul>
+            {% for area in water_resources.water_stress %}
+                <li>{{ area }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Urban Greening Opportunities -->
+    <section id="urban-greening">
+        <h2>Urban Greening Opportunities</h2>
+        <ul>
+            {% for area in urban_greening %}
+                <li>{{ area }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+</body>
+</html>

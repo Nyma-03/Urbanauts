@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blogs - Urbanauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-green-400 font-mono min-h-screen flex flex-col">
+   <nav class="bg-gradient-to-r from-purple-800 to-pink-600 p-4 flex justify-between items-center">
+  {% comment %} <a href="{% url 'home' %}" class="text-green-300 font-bold text-xl">⚡ Urbanauts ⚡</a> {% endcomment %}
+   <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-36 w-auto object-contain -my-10"> <!-- bigger logo -->
+      </a>
+  <div class="space-x-4">
+    <a href="{% url 'home' %}" class="text-white hover:text-green-300">Home</a>
+    <a href="{% url 'about' %}" class="text-white hover:text-green-300">About Us</a>
+    <a href="{% url 'contact' %}" class="text-white hover:text-green-300">Help and Contact</a>
+    
+    
+
+  </div>
+</nav>
+  <main class="flex-1 p-6">
+    <h1 class="text-pink-400 text-3xl mb-4">Community Blogs ⚡</h1>
+    <form method="get" class="mb-4">
+      <input type="text" name="q" placeholder="Search blogs..."
+             value="{{ request.GET.q }}"
+             class="p-2 w-1/2 bg-black border border-green-500 rounded">
+      <button type="submit" class="p-2 bg-green-600 text-white rounded">Search</button>
+    </form>
+
+    <div class="space-y-4">
+      {% for blog in blogs %}
+        <a href="{% url 'blog_detail' blog.id %}" class="block p-4 border border-purple-500 rounded-lg hover:bg-gray-900">
+          <h2 class="text-xl text-pink-400">{{ blog.title }}</h2>
+          <p class="text-sm">By {{ blog.author.username }} • {{ blog.created_at|date:"M d, Y" }}</p>
+          <p class="mt-2 text-green-300">{{ blog.content|truncatechars:150 }}</p>
+          {% if blog.tags %}
+            <p class="mt-1 text-xs text-purple-300">#{{ blog.tags }}</p>
+          {% endif %}
+        </a>
+      {% empty %}
+        <p class="text-red-400">No blogs found.</p>
+      {% endfor %}
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Waste Dashboard — UrbaNauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'cyber.css' %}">
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-bar"></div>
+        <span class="brand-name"><span class="brand-accent">UrbaNauts</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        <a href="{% url 'waste_submit' %}" class="nav-link">Add Entry</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1 class="title neon">Waste Tracking — Last 30 Days</h1>
+      <p class="subtitle">Leaderboard rewards **lower** total waste (more sustained).</p>
+    </section>
+
+    <section class="panel">
+      <h3 class="font-semibold neon">Leaderboard (Households & Stores)</h3>
+      <div class="mt-3 overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left">
+              <th class="pr-4 py-2">Rank</th>
+              <th class="pr-4 py-2">Name</th>
+              <th class="pr-4 py-2">Type</th>
+              <th class="pr-4 py-2">Total Waste (kg)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in totals %}
+            <tr class="border-b border-white/10">
+              <td class="pr-4 py-2">{{ forloop.counter }}</td>
+              <td class="pr-4 py-2">{{ row.profile__name }}</td>
+              <td class="pr-4 py-2">{{ row.profile__kind }}</td>
+              <td class="pr-4 py-2">{{ row.total_kg|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr><td class="py-3" colspan="4">No entries yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3 class="font-semibold neon">Totals by Waste Type</h3>
+      <div class="mt-3 overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left">
+              <th class="pr-4 py-2">Waste Type</th>
+              <th class="pr-4 py-2">Total (kg)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in by_type %}
+            <tr class="border-b border-white/10">
+              <td class="pr-4 py-2">{{ row.waste_type }}</td>
+              <td class="pr-4 py-2">{{ row.total_kg|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr><td class="py-3" colspan="2">No data.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

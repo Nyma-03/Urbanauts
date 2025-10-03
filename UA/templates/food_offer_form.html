@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Food Surplus Offer — UrbaNauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'cyber.css' %}">
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-bar"></div>
+        <span class="brand-name"><span class="brand-accent">UrbaNauts</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        <a href="{% url 'food_dashboard' %}" class="nav-link">Redistribution</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1 class="title neon">Submit Food Surplus</h1>
+      <form method="post" class="mt-4 grid gap-4 md:grid-cols-2">
+        {% csrf_token %}
+        <div class="md:col-span-2">
+          <label class="block text-sm mb-1">Store</label>
+          {{ form.store }}
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Item</label>
+          {{ form.item_name }}
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Quantity (kg)</label>
+          {{ form.quantity_kg }}
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Ready at</label>
+          {{ form.ready_at }}
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Expires at</label>
+          {{ form.expires_at }}
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm mb-1">Notes</label>
+          {{ form.notes }}
+        </div>
+        <div class="md:col-span-2">
+          <button class="btn-neon">Save</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

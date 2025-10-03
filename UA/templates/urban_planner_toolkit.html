@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Urban Planner Toolkit - Urbanauts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: monospace; background: #000; color: #0f0; }
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #0f0f0f;
+      color: #00ff99;
+      border: 2px solid #ff00ff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 0 20px #ff00ff;
+      animation: fadeout 2s forwards;
+      z-index: 1000;
+    }
+    @keyframes fadeout {
+      0% {opacity: 1; transform: translateY(0);}
+      80% {opacity: 1; transform: translateY(-20px);}
+      100% {opacity: 0; transform: translateY(-50px);}
+    }
+    .emoji {
+      position: fixed;
+      z-index: 99999 !important; /* emojis always on top */
+      pointer-events: none;
+      user-select: none;
+    }
+    .city-container {
+      position: relative;
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .city {
+      width: 45%;
+      max-width: 500px;
+      border: 2px solid #ff00ff;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 1s ease;
+    }
+    .city img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .city-label {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-weight: bold;
+      padding: 6px 0;
+      font-size: 1.2rem;
+    }
+    .stats-bar {
+      height: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #222;
+      margin-top: 4px;
+    }
+    .bar-fill {
+      height: 100%;
+      transition: width 1s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- Navbar -->
+<nav class="bg-gradient-to-r from-purple-800 to-pink-600 p-4 flex justify-between items-center shadow-lg">
+  {% comment %} <a href="{% url 'home' %}" class="text-green-300 font-bold text-xl">⚡ Urbanauts ⚡</a> {% endcomment %}
+  <a href="/" class="flex items-center">
+        <img src="{% static 'logo.png' %}" 
+             alt="Urbanauts Logo" 
+             class="h-36 w-auto object-contain -my-10"> <!-- bigger logo -->
+      </a>
+      <div class="space-x-4">
+    <a href="{% url 'home' %}" class="text-white hover:text-green-300">Home</a>
+    <a href="/profile/" class="text-white hover:text-green-300">Profile</a>
+  </div>
+</nav>
+
+<main class="flex-1 p-6">
+
+  <h1 class="text-pink-400 text-4xl mb-6 animate-pulse">Urban Planner Toolkit 🏙️</h1>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Air Quality -->
+    <div class="p-4 border border-purple-500 rounded-lg">
+      <h2 class="text-lg text-green-300">Air Quality</h2>
+      <div class="stats-bar">
+        <div class="bar-fill bg-green-500" id="air-bar" style="width: {{ stats.air_quality }}%;"></div>
+      </div>
+      <p class="mt-1 text-sm text-green-200" id="air-text">{{ stats.air_quality }}%</p>
+    </div>
+    <!-- CO2 Levels -->
+    <div class="p-4 border border-purple-500 rounded-lg">
+      <h2 class="text-lg text-red-400">CO₂ Levels</h2>
+      <div class="stats-bar">
+        <div class="bar-fill bg-red-600" id="co2-bar" style="width: {{ stats.co2_bar }}%;"></div>
+      </div>
+      <p class="mt-1 text-sm text-red-300" id="co2-text">{{ stats.co2 }}%</p>
+    </div>
+    <!-- Energy -->
+    <div class="p-4 border border-purple-500 rounded-lg">
+      <h2 class="text-lg text-yellow-400">Energy Sustainability</h2>
+      <div class="stats-bar">
+        <div class="bar-fill bg-yellow-500" id="energy-bar" style="width: {{ stats.energy_sustainability }}%;"></div>
+      </div>
+      <p class="mt-1 text-sm text-yellow-300" id="energy-text">{{ stats.energy_sustainability }}%</p>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <form method="post" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    {% csrf_token %}
+    <button type="submit" name="action" value="add_park"
+      class="px-4 py-3 bg-blue-600 rounded hover:bg-blue-500 text-white shadow-lg hover:scale-105 transform transition"
+      onclick="return showAction('🌳 Park Added! Air Quality +10%', 'add_park');">Add Park</button>
+
+    <button type="submit" name="action" value="reduce_traffic"
+      class="px-4 py-3 bg-red-600 rounded hover:bg-red-500 text-white shadow-lg hover:scale-105 transform transition"
+      onclick="return showAction('🚗 Traffic Reduced! CO₂ -15%', 'reduce_traffic');">Reduce Traffic</button>
+
+    <button type="submit" name="action" value="build_solar_farm"
+      class="px-4 py-3 bg-yellow-500 rounded hover:bg-yellow-400 text-black shadow-lg hover:scale-105 transform transition"
+      onclick="return showAction('☀️ Solar Farm Built! Energy +20%', 'build_solar_farm');">Build Solar Farm</button>
+  </form>
+
+  <!-- Before/After Cities -->
+  <div class="city-container">
+    <div class="city" id="sad-city">
+      <img src="/static/sad_city.jpg" alt="Sad City">
+      <div class="city-label">Before: Sad City</div>
+    </div>
+    <div class="city" id="happy-city">
+      <img src="/static/future_city.jpg" alt="Happy City">
+      <div class="city-label">After: Your City</div>
+    </div>
+  </div>
+
+  <!-- Action Log / Encouragement -->
+  <div class="mt-6 p-4 border border-purple-500 rounded-lg bg-gray-900 text-white" id="action-log">
+    <h2 class="text-xl text-pink-400 mb-2">City Progress & Encouragement</h2>
+    <ul id="log-list" class="list-disc ml-6">
+      <!-- New actions appear here -->
+    </ul>
+  </div>
+
+  <!-- Popup Container -->
+  <div id="popup-container"></div>
+
+</main>
+
+<script>
+function showAction(message, actionType) {
+  // Show popup
+  const popup = document.createElement('div');
+  popup.className='popup';
+  popup.innerText=message;
+  document.body.appendChild(popup);
+  setTimeout(()=>popup.remove(),2000);
+
+  // Emoji rain
+  const emojis=['🌳','🚗','☀️','💨','🔥','💧','🏙️'];
+  for(let i=0;i<25;i++){
+    const e=document.createElement('span');
+    e.className='emoji';
+    e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+    e.style.left=Math.random()*window.innerWidth+'px';
+    e.style.top='-50px';
+    e.style.fontSize=(20+Math.random()*40)+'px';
+    e.style.opacity=Math.random();
+    e.style.zIndex='99999';
+    document.body.appendChild(e);
+    setTimeout(()=>{
+      e.style.transition='top 6s linear, opacity 6s linear';
+      e.style.top=window.innerHeight+'px';
+      e.style.opacity=0;
+    },50);
+    setTimeout(()=> e.remove(),6050);
+  }
+
+  // Update action log
+  const log=document.getElementById('log-list');
+  const li=document.createElement('li');
+  let encouragement="";
+  if(actionType=='add_park') encouragement="🌳 Trees added! Air is cleaner!";
+  if(actionType=='reduce_traffic') encouragement="🚗 Traffic reduced! Less CO₂!Cleaner air! 😎";
+  if(actionType=='build_solar_farm') encouragement="☀️ Solar energy rising! Bright future!";
+  li.innerText=message + " — " + encouragement;
+  log.appendChild(li);
+
+  return false; // prevent default form submit for demo
+}
+
+// Example dynamic bar update simulation
+function updateStats(air, co2, energy){
+  document.getElementById('air-bar').style.width=air+'%';
+  document.getElementById('air-text').innerText=air+'%';
+  document.getElementById('co2-bar').style.width=co2+'%';
+  document.getElementById('co2-text').innerText=co2+'%';
+  document.getElementById('energy-bar').style.width=energy+'%';
+  document.getElementById('energy-text').innerText=energy+'%';
+}
+</script>
+
+</body>
+</html>
