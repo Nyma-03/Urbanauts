@@ -180,7 +180,7 @@ python manage.py runserver
 
 # (If Node.js)
 npm install
-
+npm start
 ```
 Open http://localhost:8000 in your browser 🚀
 
@@ -201,5 +201,5 @@ Frontend Contributor: S. M. Zabir Mahmud Zabed
 📜 License
 
 This project is developed for NASA International Space Apps Challenge 2025.
-npm start
+
 
