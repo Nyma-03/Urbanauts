@@ -171,8 +171,8 @@ We also used **Gemini AI** and **ChatGPT** to refine data collection, analysis, 
 ### Setup
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/econest.git
-cd econest
+ git clone https://github.com/Nyma-03/Urbanauts.git
+ cd Urbanauts
 
 # (If Django)
 pip install -r requirements.txt
